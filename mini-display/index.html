@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Print.App Custom integration sample - mini display</title>
+        <meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, shrink-to-fit=no">
+		<style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+			.main {
+				width: 100vw;
+                height: 100vh;
+                display: flex;
+			}
+			.left {
+                width: 50%;
+                height: 100%;
+                background-color: #FFFFFF;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .right {
+                width: 50%;
+                height: 100%;
+                background-color: #f0f0f0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .right input {
+                padding: 10px;
+                border: 1px solid #3b3b3b;
+                border-radius: 5px;
+                font-size: 16px;
+                min-width: 300px;
+            }
+		</style>
+        <script src="https://editor.print.app/js/client.js"></script>
+    </head>
+    <body>
+		<section class="main">
+            <div class="left"></div>
+            <div class="right"></div>
+        </section>
+	</body>
+	<script>
+		(function() {				
+				
+			//	Initialize Print.App
+			//	Kindly read more here on the options.. https://docs.print.app
+			window.printAppInstance = new PrintAppClient({
+					domainKey: '',		//Kinldy provide your own APIKey (https://admin.print.app/domains)
+					designId: '',	//Change this to your designId (https://admin.print.app/designs)
+					custom: true,
+					mode: 'new-project',
+                    commandSelector: '.main>.right',
+                    settingsOverride: {
+                        miniSelector: '.main>.left',
+                        displayMode: 'mini'
+                    }
+				});
+				
+			//Function to run once the app is validated (ready to be used)
+			var appReady = () => {
+				console.log('editor is ready');
+			};
+			
+			//	Function to run once the user has saved their project
+			var projectSaved = (value) => {
+				// You can console.log the data varaible to see all that's passed down
+				let { data } = value;
+				
+				if (data && data.previews && data.previews.length) {
+					// Show the preview images
+				}
+			};
+			
+			//	Attach events to the app.
+			//	You can see a list of all the events here: https://docs.print.app
+			printAppInstance.addEventListener('app:ready', appReady);
+			printAppInstance.addEventListener('app:saved', projectSaved);
+			
+		})();
+	</script>
+</html>
