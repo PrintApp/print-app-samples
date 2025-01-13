@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Print.App Custom integration sample - mini display</title>
+        <meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, shrink-to-fit=no">
+		<style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+			.main {
+				width: 100vw;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+			}
+            .main button {
+                padding: 20px 30px;
+                border: 3px solid #64748b;
+                border-radius: 10px;
+                font-size: 16px;
+                background-color: #e2e8f0;
+                cursor: pointer;
+                color: #1e293b;
+            }
+		</style>
+        <script src="https://editor.print.app/js/client.js"></script>
+    </head>
+    <body>
+		<section class="main">
+        </section>
+	</body>
+	<script>
+		(function() {
+
+			// dynamically creat a design-template...
+            const designTemplate = {
+                unit: 'cm',
+                resources: {    // resources are items you can use in your design pages. You get to reference them using the id.
+                    files: [
+                        {
+                            id: 'pdfone',
+                            displayInPanel: true,
+                            src: 'https://editor.print.app/sample/design_3ec86990819c678438736c486dww.pdf'
+                        },
+                        {
+                            id: 'imageone',
+                            displayInPanel: true,   // this will show the image in the uploads panel
+                            src: 'https://editor.print.app/sample/GRzGMDRXIAA045E.jpeg'
+                        }
+                    ],
+                },
+                pages: [
+                    {
+                        width: 58,
+                        height: 34,
+                        bleed: 1.5,
+                        objects: [
+                            {
+                                type: 'image',
+                                file: 'resources:files:imageone'
+                            }
+                        ]
+                    },
+                    {
+                        width: 58,
+                        height: 34,
+                        bleed: 1.5,
+                        objects: [
+                            {
+                                type: 'pdf',
+                                file: 'resources:files:pdfone',
+                                page: 1,
+                                fillPage: true,
+                                sizing: 'fit', // "fit | fill | stretch | none"
+                            }
+                        ]
+                    }
+                ]
+            };
+
+			//	Initialize Print.App
+			//	Kindly read more here on the options.. https://docs.print.app
+			window.printAppInstance = new PrintAppClient({
+					domainKey: '',		//Kinldy provide your own APIKey (https://admin.print.app/domains)
+					custom: true,
+					mode: 'new-project',
+                    langCode: 'en',
+                    commandSelector: '.main',
+                    settingsOverride: {
+                        // You can override the settings here
+                    },
+                    designTemplate, // pass the design template here
+				});
+				
+			//Function to run once the app is validated (ready to be used)
+			var appReady = () => {
+				console.log('editor is ready');
+			};
+			
+			//	Function to run once the user has saved their project
+			var projectSaved = (value) => {
+				// You can console.log the data varaible to see all that's passed down
+				let { data } = value;
+				
+				if (data?.previews?.length) {
+					// Show the preview images
+				}
+			};
+			
+			//	Attach events to the app.
+			//	You can see a list of all the events here: https://docs.print.app
+			printAppInstance.addEventListener('app:ready', appReady);
+			printAppInstance.addEventListener('app:saved', projectSaved);
+			
+		})();
+	</script>
+</html>
