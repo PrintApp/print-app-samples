@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Print.App Custom integration sample - Embed</title>
+        <script data-id="emb_58dd2242-92e2-4e1c-b48d-7a778d8f4665" src="https://editor.print.app/js/embed.js"></script>
+    </head>
+    <body>
+        <div id="embedDiv"></div>
+        
+        <script type="text/javascript">
+            window.projectSavedFnc = function (data) {
+                console.log('Project saved', data);
+            };
+        </script>
+    </body>
+</html>
